@@ -109,7 +109,7 @@ function updateLocation(){
         document.getElementById("longitude").value = callback.longitude;
         document.getElementById("latitude").value = callback.latitude;
         document.getElementById("longitude").value = callback.latitude;
-        document.getElementById("mapView").src = new MapManager("5YFmgewoy089oO5OD2zhOByrg2GvzB7h").getMapUrl(callback.latitude, callback.longitude, [], 16);
+        document.getElementById("mapView").src = new MapManager("5YFmgewoy089oO5OD2zhOByrg2GvzB7h").getMapUrl(callback.latitude, callback.longitude, [], 15);
     })
 }
 
