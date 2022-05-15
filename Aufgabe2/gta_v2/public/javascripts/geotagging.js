@@ -105,10 +105,10 @@ class MapManager {
  */
 function updateLocation(){
     LocationHelper.findLocation(callback => {
-        document.getElementById("latitude").value = callback.latitude;
-        document.getElementById("longitude").value = callback.longitude;
-        document.getElementById("latitude").value = callback.latitude;
-        document.getElementById("longitude").value = callback.latitude;
+        document.getElementById("T-latitude").value = callback.latitude;
+        document.getElementById("T-longitude").value = callback.longitude;
+        document.getElementById("D-latitude").value = callback.latitude;
+        document.getElementById("D-longitude").value = callback.longitude;
         document.getElementById("mapView").src = new MapManager("5YFmgewoy089oO5OD2zhOByrg2GvzB7h").getMapUrl(callback.latitude, callback.longitude, [], 14);
     })
 }
