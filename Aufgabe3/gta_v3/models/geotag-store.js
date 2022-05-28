@@ -26,7 +26,8 @@ const GeoTagExamples = require("./geotag-examples");
  * - Keyword matching should include partial matches from name or hashtag fields. 
  */
 class InMemoryGeoTagStore{
-constuctor(){
+    //Beispieldaten einlesen
+constructor(){
     let geotaglist = [];
     let i = 0;  
     while (GeoTagExamples[i]!= undefined) {
@@ -36,20 +37,46 @@ constuctor(){
     console.log(geotaglist);
 }
 
+testStore(){
+    console.log("Test der Methode testStore erfolgreich!");
+}
+
 addGeoTag(myGeoTag){
     geotaglist.push(myGeoTag);
-    console.log("LDK: hinzugefügt!!!");
+    console.log("TEST!!!"); //remove this!
 }
 
 removeGeoTag(myGeoTag){
-    
+    return geotaglist.filter(function(ele){ 
+        return ele != myGeoTag; 
+    });
 }
 
 getNearbyGeoTags(location){
+    
+    const proximity = 2;
+    let nearbyList = [];
+    for(let i=0; i<geotaglist.length(); i++){
+       let distance = Math.pow((geotaglist[i].longitude - location.longitude), 2) +  Math.pow((geotaglist[i].latitude - location.latitude), 2);
+       distance = Math.sqrt(distance);
+
+       if (distance <= proximity){
+           nearbyList.push(geotaglist[i]);
+       }
+    }
+    return nearbyList;
 }
 
 searchNearbyGeoTags(location,keyword){
-
+    let nearbyList = []; 
+    nearbyList = getNearbyGeoTags(location);
+    let resultlist1 = []; 
+    resultlist1 = lodash.filter(nearbyList, {'name': keyword});
+    let resultlist2 = []; 
+    resultlist2 = lodash.filter(nearbyList, {'hashtag': keyword})
+    let resultlist = [];
+    resultlist =  resultlist1.concat(resultlist2);
+    resultlist = resultlist.filter((x, i) => i === array.indexOf(x))
 }
 
 }

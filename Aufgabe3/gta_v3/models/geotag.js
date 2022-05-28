@@ -10,10 +10,11 @@
  * GeoTag objects should contain at least all fields of the tagging form.
  */
 class GeoTag {
-    latitude =" ";
-    logitude=" ";
-    name=" ";
-    hashtag=" ";
+   // latitude =" ";
+  //  longitude=" ";
+   //  name=" ";
+   //  hashtag=" ";
+
 constructor(mylat, mylong, myname, myhash){
     this.latitude = mylat;
     this.longitude = mylong;

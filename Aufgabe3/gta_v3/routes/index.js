@@ -62,14 +62,27 @@ router.get('/', (req, res) => {
  */
 
 router.post('/tagging', (req, res) => {
-  let mylong = req.query("longitude");
-  let mylat = req.query("latitude");
-  let myname = req.query("name");
-  let myhashtag = req.query("hashtag");
-  let myGT = new geotag (mylong, mylat, myname, myhashtag);
-  InMemoryGeoTagStore.addGeoTag(myGT);
+  var app = express(); //from express
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  console.log(req.body);
 
-  res.render('index', { taglist: [] })
+  let mylong = req.body.longitude;
+  let mylat = req.body.latitude;
+  let myname = req.body.name;
+  let myhashtag = req.body.hashtag;
+
+
+  let myGT = new GeoTag (mylong, mylat, myname, myhashtag); //new geotag is created
+  console.log("mein GT:");
+  console.log(myGT);
+  console.log("mein STORE:  *********** ");
+  console.log(GeoTagStore); // .addGeoTag   addGeoTag(myGT);
+  GeoTagStore.testStore();
+  let nearbyList = [];    //for reponse
+  //nearbyList = GeoTagStore.getNearbyGeoTags(myGT);
+
+  res.render('index', { taglist: nearbyList })
 });
 
 /**
@@ -88,6 +101,6 @@ router.post('/tagging', (req, res) => {
  * by radius and keyword.
  */
 
-// TODO: ... your code here ...
+ router.post('/discovery', (req, res) => {})
 
 module.exports = router;
