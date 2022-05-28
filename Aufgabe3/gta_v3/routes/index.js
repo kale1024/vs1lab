@@ -11,6 +11,7 @@
  */
 
 const express = require('express');
+const req = require('express/lib/request');
 const router = express.Router();
 
 /**
@@ -52,7 +53,7 @@ router.get('/', (req, res) => {
  * Requests cary the fields of the tagging form in the body.
  * (http://expressjs.com/de/4x/api.html#req.body)
  *
- * Based on the form data, a new geotag is created and stored.
+ * Based on the form data, a new geotag is created and stored./
  *
  * As response, the ejs-template is rendered with geotag objects.
  * All result objects are located in the proximity of the new geotag.
@@ -60,7 +61,16 @@ router.get('/', (req, res) => {
  * by radius around a given location.
  */
 
-// TODO: ... your code here ...
+router.post('/tagging', (req, res) => {
+  let mylong = req.query("longitude");
+  let mylat = req.query("latitude");
+  let myname = req.query("name");
+  let myhashtag = req.query("hashtag");
+  let myGT = new geotag (mylong, mylat, myname, myhashtag);
+  InMemoryGeoTagStore.addGeoTag(myGT);
+
+  res.render('index', { taglist: [] })
+});
 
 /**
  * Route '/discovery' for HTTP 'POST' requests.
