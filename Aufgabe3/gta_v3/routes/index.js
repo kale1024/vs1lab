@@ -74,10 +74,14 @@ router.post('/tagging', (req, res) => {
   //console.log("Im Tagging Routing: Lat =" + mylat);
   let myname = req.body.name;
   let myhashtag = req.body.hashtag;
-  let myGT = new GeoTag (mylong, mylat, myname, myhashtag); //new geotag is created
-  let nearbyList = [];    //for reponse
-  nearbyList = tagStore.getNearbyGeoTags(myGT);
+  let myGT = [myname,mylat,mylong,myhashtag]; //new geotag is created
+  tagStore.addGeoTag(myGT);
 
+  //console.log("my GT: " + myGT[0]);
+  let nearbyList = [];    //for reponse
+  let mylocation = [mylat,mylong];
+  nearbyList = tagStore.getNearbyGeoTags(mylocation);
+  //console.log("the nearby list is here: " + nearbyList.length);
   res.render('index', { taglist: nearbyList })
 });
 
@@ -103,11 +107,11 @@ router.post('/tagging', (req, res) => {
   app.use(express.urlencoded({ extended: true }));
 
   let mySearchterm = req.body.searchterm;
-  let mylong = 49.014993; //, 8.390049,req.body.longitude;
-  let mylat = 8.390049;//req.body.latitude;  
-  console.log("Im Discovery Routing: Lat =" + mylat);
+  let mylong = req.body.longitude;
+  let mylat = req.body.latitude;
+  //console.log("Im Discovery Routing: Lat =" + mylat);
   let myLocation= [mylong, mylat];
-  console.log("Im Discovery Routing: Location =" + myLocation[0]);
+  //console.log("Im Discovery Routing: Location =" + myLocation[0]);
   searchList = tagStore.searchNearbyGeoTags(myLocation, mySearchterm);
 
   res.render('index', { taglist: searchList })

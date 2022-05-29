@@ -67,10 +67,10 @@
                             <input type="search" name="searchterm" id="searchterm" placeholder="e.g. Karlsruhe" />
 
                             <label for="latitude"></label>
-                            <input type="hidden" name="latitude" id="D-latitude" hidden />
+                            <input type="hidden" name="latitude" id="D-latitude" />
 
                             <label for="longitude"></label>
-                            <input type="hidden" name="longitude" id="D-longitude" hidden />
+                            <input type="hidden" name="longitude" id="D-longitude" />
 
                             <input type="submit" value="Search">
                         </div>
@@ -83,7 +83,7 @@
                     <div class="discovery__taglist">
                         <ul class="discovery__results" id="discoveryResults">
                             <% if (taglist !== undefined) taglist.forEach(function(gtag) { %>
-                                <li><%= gtag.name %> ( <%= gtag.latitude %>,<%= gtag.longitude %>) <%= gtag.hashtag %> </li>
+                                <li><%= gtag[0] %> (<%= gtag[1] %>,<%= gtag[2] %>) <%= gtag[3] %> </li>
                             <% }); %>
                         </ul>
                     </div>
