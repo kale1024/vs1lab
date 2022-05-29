@@ -45,7 +45,9 @@ populate(){
 
 addGeoTag(myGeoTag){
     this.geotaglist.push(myGeoTag);
-    console.log("addGeoTag"); //remove this!
+    // console.log("addGeoTag"); //remove this!
+    // console.log("GeoTag: "+myGeoTag+" Länge: "+myGeoTag.length); //remove this!
+    // console.log("Liste: "+this.geotaglist.length);
 }
 
 removeGeoTag(myGeoTag){
@@ -55,37 +57,41 @@ removeGeoTag(myGeoTag){
 }
 
 getNearbyGeoTags(location){
-    
-    const proximity = 1;
+    //console.log("GETNEARBYGEOTAGS: ");
+    const proximity = 100;
     let nearbyList = [];
-
-    for(let i=1; i<this.geotaglist.length; i++){
+    //console.log("location: " + location[0]);
+    for(let i=0; i<this.geotaglist.length; i++){
+        //console.log(i+": "+this.geotaglist[i][0]);
        let distance =Math.pow((this.geotaglist[i][1] - location[0]), 2) + Math.pow((this.geotaglist[i][2] - location[1]), 2);
-       console.log("beofre sqrt: " + distance);
        distance = Math.sqrt(distance);
-       console.log("distance: " + distance);
-       if (distance <= proximity){
+      // console.log("distance: " + distance);
+       if (distance < proximity){
            nearbyList.push(this.geotaglist[i]);
        }
+       //else{
+           //console.log("Distance: " + distance + ", i :"+ i);
+       //}
     }
-   console.log("getNearby: " + nearbyList.length);
+    //console.log("getNearby: " + nearbyList);
+  // console.log("getNearby Lenght: " + nearbyList.length);
     return nearbyList;
 }
 
 searchNearbyGeoTags(location,keyword){
-    console.log("Wir sind im searchnearbygeotags! " + "locaction: " + location + " " + "keyword: " + keyword);
+    //console.log("Wir sind im searchnearbygeotags! " + "locaction: " + location + " " + "keyword: " + keyword);
     let nearbyList = [];
     nearbyList = this.getNearbyGeoTags(location);
-    console.log("nearbyList: " + nearbyList) ;
-    console.log("Testing Filter")
+    //console.log("nearbyList: " + nearbyList) ;
+    //console.log("Testing Filter")
     let resultlist = [];
 
     function containsKeyword(key){ //Filter criteria
-        if (key = keyword){  //works, if campus is set to campus
-        console.log("true!");
+        if (key = keyword){ 
+        //console.log("true!");
         return true;
-        }else{  //returns false even if key OR KEYWORD is set to campus
-           console.log("False!");
+        }else{ 
+           //console.log("False!");
            return false;
             
         }
