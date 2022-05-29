@@ -91,7 +91,7 @@ searchNearbyGeoTags(location,keyword){
     //resultlist =  resultlist1.concat(resultlist2);
     //resultlist = resultlist.filter((x, i) => i === array.indexOf(x))
     
-    console.log("searchnearby resultlist!");
+    console.log("searchnearby resultlist");
     console.log(resultlist1);
     return resultlist1;
 }
