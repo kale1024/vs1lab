@@ -71,6 +71,7 @@ router.post('/tagging', (req, res) => {
 
   let mylong = req.body.longitude;
   let mylat = req.body.latitude;
+  //console.log("Im Tagging Routing: Lat =" + mylat);
   let myname = req.body.name;
   let myhashtag = req.body.hashtag;
   let myGT = new GeoTag (mylong, mylat, myname, myhashtag); //new geotag is created
@@ -97,10 +98,16 @@ router.post('/tagging', (req, res) => {
  */
 
  router.post('/discovery', (req, res) => {
-  let mySearchterm = req.body.seachterm;
-  let mylong = req.body.longitude;
-  let mylat = req.body.latitude;  
-  let myLocation= (mylong, mylat);
+  var app = express(); //from express
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+
+  let mySearchterm = req.body.searchterm;
+  let mylong = 49.014993; //, 8.390049,req.body.longitude;
+  let mylat = 8.390049;//req.body.latitude;  
+  console.log("Im Discovery Routing: Lat =" + mylat);
+  let myLocation= [mylong, mylat];
+  console.log("Im Discovery Routing: Location =" + myLocation[0]);
   searchList = tagStore.searchNearbyGeoTags(myLocation, mySearchterm);
 
   res.render('index', { taglist: searchList })
