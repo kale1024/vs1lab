@@ -56,44 +56,51 @@ removeGeoTag(myGeoTag){
 
 getNearbyGeoTags(location){
     
-    const proximity = 0.001;
+    const proximity = 1;
     let nearbyList = [];
 
     for(let i=1; i<this.geotaglist.length; i++){
        let distance =Math.pow((this.geotaglist[i][1] - location[0]), 2) + Math.pow((this.geotaglist[i][2] - location[1]), 2);
+       console.log("beofre sqrt: " + distance);
        distance = Math.sqrt(distance);
+       console.log("distance: " + distance);
        if (distance <= proximity){
            nearbyList.push(this.geotaglist[i]);
        }
     }
-   // console.log("getNearby: " + nearbyList.length);
+   console.log("getNearby: " + nearbyList.length);
     return nearbyList;
 }
 
 searchNearbyGeoTags(location,keyword){
     console.log("Wir sind im searchnearbygeotags! " + "locaction: " + location + " " + "keyword: " + keyword);
     let nearbyList = [];
-    console.log("nearbyList: " + nearbyList) ;
     nearbyList = this.getNearbyGeoTags(location);
-    let resultlist1 = [];
-    function containsKeyword(key){
-        if (key == keyword){
+    console.log("nearbyList: " + nearbyList) ;
+    console.log("Testing Filter")
+    let resultlist = [];
+
+    function containsKeyword(key){ //Filter criteria
+        if (key = keyword){  //works, if campus is set to campus
+        console.log("true!");
         return true;
-        }else{
-            return false;
+        }else{  //returns false even if key OR KEYWORD is set to campus
+           console.log("False!");
+           return false;
+            
         }
     }
-    resultlist1 = nearbyList.filter(containsKeyword); //'name' : 
-   // let resultlist2 = []; 
-   // resultlist2 = nearbyList.filter(containsKeyword)
-   // let resultlist = [];
-   // resultlist = resultlist1;
+    resultlist = nearbyList.filter(containsKeyword);
+    // let resultlist2 = [];
+    // resultlist2 = nearbyList.filter(containsKeyword)
+    // let resultlist = [];
+    // resultlist = resultlist1;
     //resultlist =  resultlist1.concat(resultlist2);
     //resultlist = resultlist.filter((x, i) => i === array.indexOf(x))
     
     console.log("searchnearby resultlist");
-    console.log(resultlist1);
-    return resultlist1;
+    console.log(resultlist);
+    return resultlist;
 }
 
 }
