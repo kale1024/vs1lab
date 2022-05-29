@@ -26,42 +26,44 @@ const GeoTagExamples = require("./geotag-examples");
  * - Keyword matching should include partial matches from name or hashtag fields. 
  */
 class InMemoryGeoTagStore{
-    //Beispieldaten einlesen
-constructor(){
-    let geotaglist = [];
-    let i = 0;  
-    while (GeoTagExamples[i]!= undefined) {
-        geotaglist.push(GeoTagExamples.taglist(i));
-        i++;
-    }
-    console.log(geotaglist);
+    
+    geotaglist = [];
+    constructor(){
+    
 }
 
-testStore(){
-    console.log("Test der Methode testStore erfolgreich!");
+//Beispieldaten einlesen
+populate(){
+
+    let tagList = GeoTagExamples.tagList;
+    for (let i = 0; i < tagList.length; i++) {
+        this.geotaglist.push(tagList[i]);
+    }
+ //  console.log("populate ausgeführt");
+//   console.log(this.geotaglist[0]);
 }
 
 addGeoTag(myGeoTag){
-    geotaglist.push(myGeoTag);
-    console.log("TEST!!!"); //remove this!
+    this.geotaglist.push(myGeoTag);
+    console.log("addGeoTag"); //remove this!
 }
 
 removeGeoTag(myGeoTag){
-    return geotaglist.filter(function(ele){ 
+    return this.geotaglist.filter(function(ele){ 
         return ele != myGeoTag; 
     });
 }
 
 getNearbyGeoTags(location){
     
-    const proximity = 2;
+    const proximity = 0.5;
     let nearbyList = [];
-    for(let i=0; i<geotaglist.length(); i++){
-       let distance = Math.pow((geotaglist[i].longitude - location.longitude), 2) +  Math.pow((geotaglist[i].latitude - location.latitude), 2);
-       distance = Math.sqrt(distance);
 
+    for(let i=1; i<this.geotaglist.length; i++){
+       let distance =Math.pow((this.geotaglist[i][1] - location.longitude), 2) + Math.pow((this.geotaglist[i][2] - location.latitude), 2);
+       distance = Math.sqrt(distance);
        if (distance <= proximity){
-           nearbyList.push(geotaglist[i]);
+           nearbyList.push(this.geotaglist[i]);
        }
     }
     return nearbyList;
@@ -69,11 +71,11 @@ getNearbyGeoTags(location){
 
 searchNearbyGeoTags(location,keyword){
     let nearbyList = []; 
-    nearbyList = getNearbyGeoTags(location);
+    nearbyList = this.getNearbyGeoTags(location);
     let resultlist1 = []; 
-    resultlist1 = lodash.filter(nearbyList, {'name': keyword});
+    resultlist1 = nearbyList.filter(keyword); //'name' : 
     let resultlist2 = []; 
-    resultlist2 = lodash.filter(nearbyList, {'hashtag': keyword})
+   // resultlist2 = lodash.filter(nearbyList, {'hashtag': keyword})
     let resultlist = [];
     resultlist =  resultlist1.concat(resultlist2);
     resultlist = resultlist.filter((x, i) => i === array.indexOf(x))

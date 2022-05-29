@@ -23,6 +23,8 @@ const router = express.Router();
 // eslint-disable-next-line no-unused-vars
 const GeoTag = require('../models/geotag');
 
+
+
 /**
  * The module "geotag-store" exports a class GeoTagStore. 
  * It provides an in-memory store for geotag objects.
@@ -31,7 +33,8 @@ const GeoTag = require('../models/geotag');
  */
 // eslint-disable-next-line no-unused-vars
 const GeoTagStore = require('../models/geotag-store');
-
+var tagStore = new GeoTagStore();
+tagStore.populate();
 /**
  * Route '/' for HTTP 'GET' requests.
  * (http://expressjs.com/de/4x/api.html#app.get.method)
@@ -65,22 +68,14 @@ router.post('/tagging', (req, res) => {
   var app = express(); //from express
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
-  console.log(req.body);
 
   let mylong = req.body.longitude;
   let mylat = req.body.latitude;
   let myname = req.body.name;
   let myhashtag = req.body.hashtag;
-
-
   let myGT = new GeoTag (mylong, mylat, myname, myhashtag); //new geotag is created
-  console.log("mein GT:");
-  console.log(myGT);
-  console.log("mein STORE:  *********** ");
-  console.log(GeoTagStore); // .addGeoTag   addGeoTag(myGT);
-  GeoTagStore.testStore();
   let nearbyList = [];    //for reponse
-  //nearbyList = GeoTagStore.getNearbyGeoTags(myGT);
+  nearbyList = tagStore.getNearbyGeoTags(myGT);
 
   res.render('index', { taglist: nearbyList })
 });
@@ -101,6 +96,14 @@ router.post('/tagging', (req, res) => {
  * by radius and keyword.
  */
 
- router.post('/discovery', (req, res) => {})
+ router.post('/discovery', (req, res) => {
+  let mySearchterm = req.body.seachterm;
+  let mylong = req.body.longitude;
+  let mylat = req.body.latitude;  
+  let myLocation= (mylong, mylat);
+  searchList = tagStore.searchNearbyGeoTags(myLocation, mySearchterm);
+
+  res.render('index', { taglist: searchList })
+ })
 
 module.exports = router;
