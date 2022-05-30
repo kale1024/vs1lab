@@ -27,14 +27,14 @@ function updateLocation(){
         document.getElementById("D-longitude").value = callback.longitude;
         let taglistNah = JSON.parse(document.getElementById("mapView").getAttribute("data-tags"));
         document.getElementById("mapView").src = new MapManager("5YFmgewoy089oO5OD2zhOByrg2GvzB7h").getMapUrl(callback.latitude, callback.longitude, taglistNah, 14);
-        console.log("were in the if statement");
+        console.log("we are in the if statement");
     })
 } else{
     let latitude = document.getElementById("T-latitude").value;
     let longitude = document.getElementById("T-longitude").value;
     let taglistNah = JSON.parse(document.getElementById("mapView").getAttribute("data-tags"));
     document.getElementById("mapView").src = new MapManager("5YFmgewoy089oO5OD2zhOByrg2GvzB7h").getMapUrl(latitude, longitude, taglistNah);
-    console.log("were in the else statement");
+    console.log("we are in the else statement");
 }
 }
 

@@ -32,7 +32,7 @@ class InMemoryGeoTagStore{
     
 }
 
-//Beispieldaten einlesen
+//Beispieldaten einlesen aus examples
 populate(){
 
     let tagList = GeoTagExamples.tagList;
