@@ -9,7 +9,7 @@
  * A class representing geotags.
  * GeoTag objects should contain at least all fields of the tagging form.
  */
-class GeoTag {
+ class GeoTag {
     name = " ";
     latitude = 0;
     longitude = 0;
@@ -20,7 +20,7 @@ constructor(myname, mylat, mylong, myhash){
     this.longitude = mylong;
     this.name = myname;
     this.hashtag = myhash;
-    //console.log("constuctor gerufen: +" + this.latitude);
+
 };
 
 }

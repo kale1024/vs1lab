@@ -3,6 +3,7 @@
 const GeoTagExamples = require("./geotag-examples");
 const GeoTag = require('../models/geotag');
 
+
 /**
  * This script is a template for exercise VS1lab/Aufgabe3
  * Complete all TODOs in the code documentation.
@@ -28,7 +29,7 @@ const GeoTag = require('../models/geotag');
  */
 class InMemoryGeoTagStore{
     
-    geotaglist = [];
+    #geotaglist = [];
     constructor(){
     
 }
@@ -38,27 +39,28 @@ populate(){
 
     let tagList = GeoTagExamples.tagList;
     for (let i = 0; i < tagList.length; i++) {
-       let myname = tagList[i][0]; //NEW THING ADDED
-       let mylat = tagList[i][1]; //NEW THING ADDED
-       let mylong = tagList[i][2]; //NEW THING ADDED
-       let myhashtag = tagList[i][3]; //NEW THING ADDED
-       let myGT = new GeoTag(myname, mylong, mylat, myhashtag); //NEW THING ADDED
-        this.geotaglist.push(myGT);
+       let myname = tagList[i][0];
+       let mylat = tagList[i][1]; 
+       let mylong = tagList[i][2];
+       let myhashtag = tagList[i][3];
+       let myGT = new GeoTag(myname, mylong, mylat, myhashtag);
+        this.#geotaglist.push(myGT);
     //console.log("populate ausgeführt");
    //console.log(myGT.name);
     }
-   
+ //  console.log("populate ausgeführt");
+//   console.log(this.geotaglist[0]);
 }
 
 addGeoTag(myGeoTag){
-    this.geotaglist.push(myGeoTag);
+    this.#geotaglist.push(myGeoTag);
     // console.log("addGeoTag"); //remove this!
     // console.log("GeoTag: "+myGeoTag+" Länge: "+myGeoTag.length); //remove this!
     // console.log("Liste: "+this.geotaglist.length);
 }
 
 removeGeoTag(myGeoTag){
-    return this.geotaglist.filter(function(ele){ 
+    return this.#geotaglist.filter(function(ele){ 
         return ele != myGeoTag; 
     });
 }
@@ -68,22 +70,24 @@ getNearbyGeoTags(location){
     const proximity = 100;
     let nearbyList = [];
     //console.log("location: " + location[0]);
-    for(let i=0; i<this.geotaglist.length; i++){
-        //console.log(i+": "+this.geotaglist[i].longitude);
-       let distance =Math.pow((this.geotaglist[i].longitude - location[1]), 2) + Math.pow((this.geotaglist[i].latitude - location[0]), 2); //NEW THING ADDED
+    for(let i=0; i<this.#geotaglist.length; i++){
+        //console.log(i+": "+this.geotaglist[i][0]);
+        let distance =Math.pow((this.#geotaglist[i].longitude - location[1]), 2) + Math.pow((this.#geotaglist[i].latitude - location[0]), 2);
        distance = Math.sqrt(distance);
       // console.log("distance: " + distance);
        if (distance < proximity){
-           nearbyList.push(this.geotaglist[i]);
+           nearbyList.push(this.#geotaglist[i]);
        }
        //else{
            //console.log("Distance: " + distance + ", i :"+ i);
        //}
     }
-    //console.log("getNearby: " + nearbyList[0].name);
+    //console.log("getNearby: " + nearbyList);
   // console.log("getNearby Lenght: " + nearbyList.length);
     return nearbyList;
 }
+
+
 
 searchNearbyGeoTags(location,keyword){
     //console.log("Wir sind im searchnearbygeotags! " + "locaction: " + location + " " + "keyword: " + keyword);
@@ -95,12 +99,39 @@ searchNearbyGeoTags(location,keyword){
 
     resultlist = nearbyList.filter(tag=> tag.name === keyword || tag.hashtag === keyword);
 
+    // let resultlist2 = [];
+    // resultlist2 = nearbyList.filter(containsKeyword)
+    // let resultlist = [];
+    // resultlist = resultlist1;
+    //resultlist =  resultlist1.concat(resultlist2);
+    //resultlist = resultlist.filter((x, i) => i === array.indexOf(x))
     
     console.log("searchnearby resultlist");
-    console.log(resultlist.length);
+    console.log(resultlist);
     return resultlist;
 }
 
+getGeoTagById(id){
+    console.log("geotag-store/getGeoTagsById: " + id); 
+    if (id < this.#geotaglist.length){
+    let foundGeoTag = new GeoTag();
+    foundGeoTag = this.#geotaglist[id];
+
+    console.log("geotag-store/getGeoTagsById: FoundGeoTag: " + foundGeoTag.name);
+
+    return foundGeoTag ;
+} else {
+    console.log("This Id is larger than the array!")
+    return null;
+}
+
+}
+
+changeGeoTagById(id, GeoTag){
+    console.log("geotag-store/changeGeoTagById" + id + "name" + GeoTag.name);
+    this.#geotaglist[id]= GeoTag;
+    return GeoTag;
+}
 }
 
 module.exports = InMemoryGeoTagStore
