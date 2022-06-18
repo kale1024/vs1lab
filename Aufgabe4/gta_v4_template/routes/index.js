@@ -56,7 +56,7 @@
   * If 'latitude' and 'longitude' are available, it will be further filtered based on radius.
   */
  
- router.get('/api/geotags', (req, res) => {
+ router.get('/api/geotags', (req, res) => { //here needs some parameter
    var app = express(); //from express
    app.use(express.json());
    app.use(express.urlencoded({ extended: true }));
@@ -64,18 +64,15 @@
    
    let mylong = req.query.longitude;
    let mylat = req.query.latitude;
-   console.log("Index.js/GET/API/GEOTAGS: Body Lat =" + mylat);
-   /*
-   let myname = req.body.name;
-   let myhashtag = req.body.hashtag;
-   let myGT = new GeoTag(myname, mylong, mylat, myhashtag); //NEW THING ADDED
-   tagStore.addGeoTag(myGT);
- 
-   console.log("my GT name: " + myGT.name); */
-
    let nearbyList = [];    //for reponse
    let mylocation = [mylat,mylong];
-   nearbyList = tagStore.getNearbyGeoTags(mylocation);
+   let mySearchterm = req.params.searchterm;
+   console.log("Index.js/GET/API/GEOTAGS: Body Lat =" + mylat);
+   if (mySearchterm != ""){
+    nearbyList = tagStore.searchNearbyGeoTags(location, mySearchterm);
+   }
+    else{
+   nearbyList = tagStore.getNearbyGeoTags(mylocation);}
    
 
    console.log("Index.js/GET/API/GEOTAGS " );
@@ -145,7 +142,13 @@
   */
  
   router.put('/api/geotags:id', (req, res) => {
-    res.status(200).json(JSON.stringify(tagStore));
+    let myId = req.params.id;
+    let mylong = req.body.longitude;
+    let mylat = req.body.latitude;
+    let myname = req.body.name;
+    let myhashtag = req.body.hashtag;
+    let myGeoTag = new GeoTag(myname, mylong, mylat, myhashtag);
+    res.status(200).json(JSON.stringify(tagStore.changeGeoTagById(myId, myGeoTag)));
     console.log("Index.js/PUT/API/GEOTAGS ID: ");
     console.log(req.params.id);
   });
@@ -163,9 +166,13 @@
   */
  
   router.delete('/api/geotags:id', (req, res) => {
-    res.status(200).json(JSON.stringify(tagStore));
+    let myId = req.params.id;
     console.log("Index.js/DELETE/API/GEOTAGS ID: ")
-    console.log(req.params.id);
+    console.log(myId);
+    let myGeoTag = tagStore.getGeoTagById(myId);
+    tagStore.removeGeoTag(myGeoTag);
+    res.status(200).json(JSON.stringify({}));
+   
   });
  
  module.exports = router;

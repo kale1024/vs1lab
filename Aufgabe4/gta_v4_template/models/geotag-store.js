@@ -126,6 +126,12 @@ getGeoTagById(id){
 }
 
 }
+
+changeGeoTagById(id, GeoTag){
+    console.log("geotag-store/changeGeoTagById" + id + "name" + GeoTag.name);
+    this.#geotaglist[id]= GeoTag;
+    return GeoTag;
+}
 }
 
 module.exports = InMemoryGeoTagStore
