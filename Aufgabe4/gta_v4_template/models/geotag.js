@@ -20,7 +20,6 @@ constructor(myname, mylat, mylong, myhash){
     this.longitude = mylong;
     this.name = myname;
     this.hashtag = myhash;
-
 };
 
 }
