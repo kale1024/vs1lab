@@ -57,6 +57,11 @@ removeGeoTag(myGeoTag){
     });
 }
 
+removeGeoTagById(id){
+    this.#geotaglist.splice(id, 1);
+    console.log("geotag-store/removeGeoTagById Id:" +id);
+}
+
 getNearbyGeoTags(location){
     const proximity = 100;
     let nearbyList = [];
@@ -67,6 +72,7 @@ getNearbyGeoTags(location){
            nearbyList.push(this.#geotaglist[i]);
        }
     }
+    console.log(nearbyList);
     return nearbyList;
 }
 
@@ -80,8 +86,13 @@ searchNearbyGeoTags(location,keyword){
     return resultlist;
 }
 
+getAllGeoTags(){
+    return this.#geotaglist;
+
+}
+
 getGeoTagById(id){
-    console.log("geotag-store/getGeoTagsById: " + id); 
+//console.log("geotag-store/getGeoTagsById: " + id); 
     if (id < this.#geotaglist.length){
     let foundGeoTag = new GeoTag();
     foundGeoTag = this.#geotaglist[id];

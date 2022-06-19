@@ -64,21 +64,28 @@
    
    let mylong = req.query.longitude;
    let mylat = req.query.latitude;
-   let nearbyList = [];    //for reponse
+   let nearbyList = [];  //for reponse
    let mylocation = [mylat,mylong];
-   let mySearchterm = req.params.searchterm;
-   console.log("Index.js/GET/API/GEOTAGS: Body Lat =" + mylat);
-   if (mySearchterm != ""){
-    nearbyList = tagStore.searchNearbyGeoTags(location, mySearchterm);
+   let mySearchterm = req.query.searchterm;
+   //console.log("Index.js/GET/API/GEOTAGS: Body Lat = " + mylat);
+
+   //filter for Searchterm and location
+   if (mySearchterm != undefined && (mylong !== undefined && mylat !== undefined)){ //Question: undefined or ""
+    nearbyList = tagStore.searchNearbyGeoTags(mylocation, mySearchterm);
    }
-    else{
-   nearbyList = tagStore.getNearbyGeoTags(mylocation);}
+   // filter only location
+   else if(mylong !== undefined && mylat !== undefined){
+    nearbyList = tagStore.getNearbyGeoTags(mylocation);
+
+    //no filter
+   } else{
+    nearbyList = tagStore.getAllGeoTags();
+    console.log("index.js/api/geotags/get/else")
+}
    
 
    console.log("Index.js/GET/API/GEOTAGS " );
    res.status(200).json(JSON.stringify(nearbyList));
-    //res.json(req.body);
-   // res.render('index', { taglist: nearbyList })
  });
  
  
@@ -101,7 +108,7 @@
     let myGT = new GeoTag(myname, mylong, mylat, myhashtag);
     tagStore.addGeoTag(myGT);
 
-    res.status(201).json(JSON.stringify(tagStore.GeoTag));  // TODO: check what result is required
+    res.status(201).json(JSON.stringify(tagStore.getAllGeoTags()));
 
     console.log("Index.js/POST/API/GEOTAGS name");
     console.log(myname);
@@ -121,7 +128,7 @@
  
   router.get('/api/geotags:id', (req, res) => {
     let myId = req.params.id;
-    res.status(200).json(JSON.stringify(tagStore.getGeoTagById(myId))); //TODO: 200?
+    res.status(200).json(JSON.stringify(tagStore.getGeoTagById(myId))); //Question: 200?
     console.log("Index.js/GET/API/GEOTAGS ID: ");
     console.log(req.params.id);
   });
@@ -148,7 +155,7 @@
     let myname = req.body.name;
     let myhashtag = req.body.hashtag;
     let myGeoTag = new GeoTag(myname, mylong, mylat, myhashtag);
-    res.status(200).json(JSON.stringify(tagStore.changeGeoTagById(myId, myGeoTag)));  //res.status(202)
+    res.status(200).json(JSON.stringify(tagStore.changeGeoTagById(myId, myGeoTag)));  //Question: res.status(202)
     console.log("Index.js/PUT/API/GEOTAGS ID: ");
     console.log(req.params.id);
   });
@@ -169,9 +176,8 @@
     let myId = req.params.id;
     console.log("Index.js/DELETE/API/GEOTAGS ID: ")
     console.log(myId);
-    let myGeoTag = tagStore.getGeoTagById(myId);
-    tagStore.removeGeoTag(myGeoTag);
-    res.status(200).json(JSON.stringify({})); //res.status(202)
+    tagStore.removeGeoTagById(myId);
+    res.status(200).json(JSON.stringify({})); //Question res.status(202)
    
   });
  
