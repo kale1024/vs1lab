@@ -148,7 +148,7 @@
     let myname = req.body.name;
     let myhashtag = req.body.hashtag;
     let myGeoTag = new GeoTag(myname, mylong, mylat, myhashtag);
-    res.status(200).json(JSON.stringify(tagStore.changeGeoTagById(myId, myGeoTag)));
+    res.status(200).json(JSON.stringify(tagStore.changeGeoTagById(myId, myGeoTag)));  //res.status(202)
     console.log("Index.js/PUT/API/GEOTAGS ID: ");
     console.log(req.params.id);
   });
@@ -171,7 +171,7 @@
     console.log(myId);
     let myGeoTag = tagStore.getGeoTagById(myId);
     tagStore.removeGeoTag(myGeoTag);
-    res.status(200).json(JSON.stringify({}));
+    res.status(200).json(JSON.stringify({})); //res.status(202)
    
   });
  
